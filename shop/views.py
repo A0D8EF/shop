@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
 from django.db.models import Q
 
 from .models import Category, Product
-from .forms import CategorySearchForm, ProductMaxPriceForm, ProductMinPriceForm
+from .forms import CategorySearchForm, ProductMaxPriceForm, ProductMinPriceForm, StartReleaseForm, EndReleaseForm
 
 class IndexView(View):
 
@@ -37,9 +37,26 @@ class IndexView(View):
         if form.is_valid():
             cleaned = form.clean()
             query   &= Q(price__gte=cleaned["min_price"])
+        
+        start_release = ""
+        end_release = ""
+        form        = StartReleaseForm(request.GET)
+        if form.is_valid():
+            cleaned = form.clean()
+            query   &= Q(release__gte=cleaned["start_release"])
+            start_release = cleaned["start_release"]
+        
+        form        = EndReleaseForm(request.GET)
+        if form.is_valid():
+            cleaned = form.clean()
+            query   &= Q(release__lte=cleaned["end_release"])
+            end_release = cleaned["end_release"]
 
+        if start_release != "" and end_release != "":
+            if start_release >= end_release:
+                return redirect("shop:index")
 
-        context["products"]     = Product.objects.filter(query).order_by("-dt")
+        context["products"]     = Product.objects.filter(query).order_by("-release")
         context["categories"]   = Category.objects.all().order_by("-dt")
 
         return render(request, "shop/index.html", context)

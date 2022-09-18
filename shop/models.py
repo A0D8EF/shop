@@ -18,4 +18,4 @@ class Product(models.Model):
     category    = models.ForeignKey(Category, verbose_name="カテゴリ", on_delete=models.CASCADE)
     
     price       = models.IntegerField(verbose_name="価格")
-    release     = models.DateTimeField(verbose_name="発売日")
+    release     = models.DateField(verbose_name="発売日")

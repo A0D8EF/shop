@@ -8,6 +8,11 @@
         <title>通販サイト</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+
         <script src="{% static 'shop/js/index.js' %}"></script>
     </head>
     <body>
@@ -35,6 +40,7 @@
                 <a class="btn btn{% if request.GET.min_price != '5000'  %}-outline{% endif %}-primary" href="?{% url_replace request 'min_price' 5000  %}">5,000~</a>
                 <a class="btn btn{% if request.GET.min_price != '10000' %}-outline{% endif %}-primary" href="?{% url_replace request 'min_price' 10000 %}">10,000~</a>
                 <a class="btn btn{% if request.GET.min_price != '50000' %}-outline{% endif %}-primary" href="?{% url_replace request 'min_price' 50000 %}">50,000~</a>
+                <a class="btn btn-outline-secondary" href="?{% url_replace request 'min_price' '' %}">クリア</a>
             </div>
             <div>
                 <a class="btn btn{% if request.GET.max_price != '500'   %}-outline{% endif %}-primary" href="?{% url_replace request 'max_price' 500   %}">~500</a>
@@ -42,11 +48,20 @@
                 <a class="btn btn{% if request.GET.max_price != '5000'  %}-outline{% endif %}-primary" href="?{% url_replace request 'max_price' 5000  %}">~5,000</a>
                 <a class="btn btn{% if request.GET.max_price != '10000' %}-outline{% endif %}-primary" href="?{% url_replace request 'max_price' 10000 %}">~10,000</a>
                 <a class="btn btn{% if request.GET.max_price != '50000' %}-outline{% endif %}-primary" href="?{% url_replace request 'max_price' 50000 %}">~50,000</a>
+                <a class="btn btn-outline-secondary" href="?{% url_replace request 'max_price' '' %}">クリア</a>
             </div>
+
+            <h2>発売日</h2>
+            <form action="">
+                <input class="date mr-1" name="start_release" value="{{ request.GET.start_release }}">~
+                <input class="date" name="end_release" value="{{ request.GET.end_release }}">
+                <input id="search_release" type="button" value="検索">
+            </form>
+
 
             <div class="row">
                 {% for product in products %}
-                <div class="col-sm-3 border">
+                <div class="col-sm-3 border p-2">
                     <div>{{ product.category.name }}</div>
                     <div>発売日：{{ product.release }}</div>
                     <div>{{ product.name }}</div>
