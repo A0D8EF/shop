@@ -11,7 +11,6 @@ window.addEventListener("load", function (){
         // defaultDate: date
     }
     flatpickr(".date", config_date);
-    flatpickr(".date", config_date);
 
     $("#search").on("click", function(){ url_replace_sendform(this); });
     $("#search_release").on("click", function(){ url_replace_sendform(this); });
